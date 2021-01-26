@@ -1,4 +1,12 @@
-const server = require('fastify')();
+
+const fs = require('fs');
+const path = require('path');
+const server = require('fastify')({
+  https: {
+    key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
+    cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
+  }
+});
 const HOST = process.env.HOST || '127.0.0.1';
 const PORT = process.env.PORT || 4000;
 
