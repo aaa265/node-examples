@@ -1,19 +1,14 @@
-
 const fs = require('fs');
-const path = require('path');
 const server = require('fastify')({
   https: {
-    key: fs.readFileSync(path.resolve(__dirname, 'key.pem')),
-    cert: fs.readFileSync(path.resolve(__dirname, 'cert.pem')),
+    key: fs.readFileSync(__dirname+'/key.pem'),
+    cert: fs.readFileSync(__dirname+'/cert.pem'),
   }
 });
 const HOST = process.env.HOST || '127.0.0.1';
 const PORT = process.env.PORT || 4000;
 
-console.log(`worker pid=${process.pid}`);
-
 server.get('/recipes/:id', async (req, reply) => {
-  console.log(`worker request pid=${process.pid}`);
   const id = Number(req.params.id);
   if (id !== 42) {
     reply.statusCode = 404;
@@ -33,5 +28,5 @@ server.get('/recipes/:id', async (req, reply) => {
 });
 
 server.listen(PORT, HOST, () => {
-  console.log(`Producer running at http://${HOST}:${PORT}`);
+  console.log(`Producer running at https://${HOST}:${PORT}`);
 });
